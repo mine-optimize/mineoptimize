@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MINE OPTIMIZE | Pro Gaming Optimization</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'syne': ['Syne', 'sans-serif'],
+                        'grotesk': ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        'brand': {
+                            900: '#0f0518',
+                            800: '#1a0b2e',
+                            700: '#2d1b4e',
+                            600: '#4c1d95',
+                            500: '#6d28d9',
+                            400: '#8b5cf6',
+                            300: '#a78bfa',
+                            100: '#ede9fe',
+                            accent: '#d946ef',
+                            glow: '#22d3ee'
+                        }
+                    },
+                    animation: {
+                        'spin-slow': 'spin 8s linear infinite',
+                        'bounce-slow': 'bounce 2s infinite',
+                        'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 3s ease-in-out infinite',
+                        'float-delayed': 'float 3s ease-in-out infinite 1s',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'shimmer': 'shimmer 2s linear infinite',
+                        'wiggle': 'wiggle 1s ease-in-out infinite',
+                        'slide-up': 'slideUp 0.5s ease-out',
+                        'scale-in': 'scaleIn 0.5s ease-out',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        glow: {
+                            '0%': { boxShadow: '0 0 5px rgba(139, 92, 246, 0.5)' },
+                            '100%': { boxShadow: '0 0 20px rgba(139, 92, 246, 0.8), 0 0 40px rgba(217, 70, 239, 0.4)' },
+                        },
+                        shimmer: {
+                            '0%': { backgroundPosition: '-1000px 0' },
+                            '100%': { backgroundPosition: '1000px 0' },
+                        },
+                        wiggle: {
+                            '0%, 100%': { transform: 'rotate(-3deg)' },
+                            '50%': { transform: 'rotate(3deg)' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        scaleIn: {
+                            '0%': { transform: 'scale(0.9)', opacity: '0' },
+                            '100%': { transform: 'scale(1)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0f0518;
+            color: #fafafa;
+            font-family: 'Space Grotesk', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .font-display {
+            font-family: 'Syne', sans-serif;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #a78bfa 0%, #d946ef 50%, #22d3ee 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% 200%;
+            animation: gradientShift 3s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .glow-purple {
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3), 0 0 40px rgba(139, 92, 246, 0.1);
+            animation: glowPulse 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glowPulse {
+            0% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.3); }
+            100% { box-shadow: 0 0 30px rgba(139, 92, 246, 0.6), 0 0 60px rgba(217, 70, 239, 0.3); }
+        }
+
+        .glass {
+            background: rgba(45, 27, 78, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .glass:hover {
+            background: rgba(45, 27, 78, 0.6);
+            border-color: rgba(217, 70, 239, 0.5);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 40px rgba(139, 92, 246, 0.3);
+        }
+
+        .bg-grid {
+            background-image: 
+                linear-gradient(rgba(139, 92, 246, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(139, 92, 246, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 60px); }
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #7c3aed 0%, #d946ef 100%);
+            position: relative;
+            overflow: hidden;
+            animation: btnGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes btnGlow {
+            0% { box-shadow: 0 0 20px rgba(124, 58, 237, 0.4); }
+            100% { box-shadow: 0 0 40px rgba(217, 70, 239, 0.6), 0 0 60px rgba(124, 58, 237, 0.4); }
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        .feature-card {
+            animation: float 4s ease-in-out infinite;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:nth-child(2) { animation-delay: 0.5s; }
+        .feature-card:nth-child(3) { animation-delay: 1s; }
+        .feature-card:nth-child(4) { animation-delay: 1.5s; }
+        .feature-card:nth-child(5) { animation-delay: 0.3s; }
+        .feature-card:nth-child(6) { animation-delay: 0.8s; }
+        .feature-card:nth-child(7) { animation-delay: 1.3s; }
+        .feature-card:nth-child(8) { animation-delay: 1.8s; }
+
+        .feature-card:hover {
+            animation-play-state: paused;
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(217, 70, 239, 0.5);
+        }
+
+        .icon-box {
+            animation: iconPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes iconPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .feature-card:hover .icon-box {
+            animation: iconSpin 0.5s ease;
+        }
+
+        @keyframes iconSpin {
+            0% { transform: rotate(0deg) scale(1); }
+            100% { transform: rotate(360deg) scale(1.2); }
+        }
+
+        .counter-value {
+            font-variant-numeric: tabular-nums;
+            animation: numberGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes numberGlow {
+            0% { text-shadow: 0 0 10px rgba(167, 139, 250, 0.5); }
+            100% { text-shadow: 0 0 20px rgba(167, 139, 250, 0.8), 0 0 40px rgba(217, 70, 239, 0.4); }
+        }
+
+        .line-reveal::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #a78bfa, #d946ef);
+            transition: width 0.3s ease;
+        }
+
+        .line-reveal:hover::after {
+            width: 100%;
+            animation: lineShimmer 1s infinite;
+        }
+
+        @keyframes lineShimmer {
+            0% { background-position: -100% 0; }
+            100% { background-position: 100% 0; }
+        }
+
+        .badge-pulse {
+            animation: badgePulse 2s infinite;
+        }
+
+        @keyframes badgePulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(217, 70, 239, 0.4); }
+            50% { box-shadow: 0 0 0 15px rgba(217, 70, 239, 0); }
+        }
+
+        .floating-icon {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .floating-icon:nth-child(2) { animation-delay: 0.5s; }
+        .floating-icon:nth-child(3) { animation-delay: 1s; }
+
+        .price-tag {
+            animation: priceGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes priceGlow {
+            0% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
+            100% { text-shadow: 0 0 30px rgba(217, 70, 239, 0.6); }
+        }
+
+        .social-icon {
+            animation: socialFloat 3s ease-in-out infinite;
+        }
+
+        .social-icon:nth-child(2) { animation-delay: 0.2s; }
+        .social-icon:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes socialFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .social-icon:hover {
+            animation: socialSpin 0.5s ease;
+        }
+
+        @keyframes socialSpin {
+            0% { transform: rotate(0deg) scale(1); }
+            100% { transform: rotate(360deg) scale(1.1); }
+        }
+
+        .check-icon {
+            animation: checkPop 2s ease-in-out infinite;
+        }
+
+        @keyframes checkPop {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .platform-card {
+            animation: platformFloat 4s ease-in-out infinite;
+        }
+
+        .platform-card:nth-child(2) { animation-delay: 0.5s; }
+
+        @keyframes platformFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(1deg); }
+        }
+
+        .platform-card:hover {
+            animation-play-state: paused;
+        }
+
+        .nav-link {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #d946ef, transparent);
+            transform: translateX(-100%);
+            animation: navSlide 3s infinite;
+        }
+
+        @keyframes navSlide {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .hero-image-float {
+            animation: heroFloat 6s ease-in-out infinite;
+        }
+
+        @keyframes heroFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(2deg); }
+        }
+
+        .rotating-bg {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(139, 92, 246, 0.1), transparent, rgba(217, 70, 239, 0.1), transparent);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .shimmer-text {
+            background: linear-gradient(90deg, #a78bfa, #d946ef, #22d3ee, #a78bfa);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textShimmer 3s linear infinite;
+        }
+
+        @keyframes textShimmer {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0f0518;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #4c1d95;
+            border-radius: 4px;
+            animation: scrollbarPulse 2s infinite;
+        }
+
+        @keyframes scrollbarPulse {
+            0%, 100% { background: #4c1d95; }
+            50% { background: #6d28d9; }
+        }
+
+        .toast-animate {
+            animation: toastSlide 0.3s ease-out;
+        }
+
+        @keyframes toastSlide {
+            0% { transform: translateY(100px) scale(0.9); opacity: 0; }
+            100% { transform: translateY(0) scale(1); opacity: 1; }
+        }
+
+        .pricing-card {
+            animation: pricingFloat 5s ease-in-out infinite;
+        }
+
+        .pricing-card:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        @keyframes pricingFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .pricing-card:hover {
+            animation-play-state: paused;
+        }
+
+        .popular-badge {
+            animation: popularPulse 2s infinite;
+        }
+
+        @keyframes popularPulse {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.1); }
+        }
+
+        .profile-image {
+            transition: all 0.5s ease;
+        }
+
+        .profile-image:hover {
+            transform: scale(1.05) rotate(2deg);
+        }
+    </style>
+</head>
+<body class="bg-grid">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 top-0 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500 to-brand-accent flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-300 animate-pulse">
+                        <i class="fas fa-crosshairs text-white text-lg"></i>
+                    </div>
+                    <span class="font-display font-bold text-2xl tracking-tight text-white group-hover:text-brand-300 transition-colors shimmer-text">MINE OPTIMIZE</span>
+                </a>
+
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="#features" class="nav-link text-sm font-medium text-gray-300 hover:text-white py-2 transition-colors">Features</a>
+                    <a href="#pricing" class="nav-link text-sm font-medium text-gray-300 hover:text-white py-2 transition-colors">Pricing</a>
+                    <a href="#about" class="nav-link text-sm font-medium text-gray-300 hover:text-white py-2 transition-colors">About</a>
+                    <a href="#contact" class="btn-primary px-6 py-3 rounded-full text-sm font-bold text-white hover:scale-105 transition-transform">Get Started</a>
+                </div>
+
+                <button class="md:hidden text-white text-2xl hover:rotate-90 transition-transform" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="mobile-menu fixed top-0 right-0 w-80 h-full bg-brand-800 z-50 p-8 md:hidden" id="mobileMenu">
+            <button class="absolute top-6 right-6 text-white text-2xl hover:rotate-90 transition-transform" onclick="toggleMobileMenu()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="flex flex-col gap-6 mt-16">
+                <a href="#features" class="text-xl font-display font-bold text-white hover:text-brand-300 hover:translate-x-2 transition-all" onclick="toggleMobileMenu()">Features</a>
+                <a href="#pricing" class="text-xl font-display font-bold text-white hover:text-brand-300 hover:translate-x-2 transition-all" onclick="toggleMobileMenu()">Pricing</a>
+                <a href="#about" class="text-xl font-display font-bold text-white hover:text-brand-300 hover:translate-x-2 transition-all" onclick="toggleMobileMenu()">About</a>
+                <a href="#contact" class="btn-primary px-6 py-3 rounded-full text-center font-bold text-white mt-4 hover:scale-105 transition-transform" onclick="toggleMobileMenu()">Get Started</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center pt-20 overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-brand-600/20 via-transparent to-transparent"></div>
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="rotating-bg"></div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-8">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass badge-pulse opacity-0" id="heroBadge">
+                        <span class="w-2 h-2 rounded-full bg-brand-accent animate-ping"></span>
+                        <span class="text-xs font-bold text-brand-300 uppercase tracking-wider">100+ Players Optimized</span>
+                    </div>
+
+                    <h1 class="font-display font-black text-5xl md:text-7xl lg:text-8xl leading-none opacity-0" id="heroTitle">
+                        <span class="block text-white hover:tracking-wider transition-all duration-500">MINE</span>
+                        <span class="block gradient-text animate-pulse">Lag Fix</span>
+                        <span class="block text-white hover:tracking-wider transition-all duration-500">STORE</span>
+                    </h1>
+
+                    <p class="text-lg md:text-xl text-gray-400 max-w-lg opacity-0" id="heroText">
+                        Customized sensitivity tuned to your device & playstyle. Better headshots. Smooth aim. Zero lag.
+                    </p>
+
+                    <div class="flex flex-wrap gap-4 opacity-0" id="heroButtons">
+                        <a href="#pricing" class="btn-primary px-8 py-4 rounded-full font-bold text-white flex items-center gap-2 group hover:scale-105 transition-transform animate-bounce-slow">
+                            View Plans
+                            <i class="fas fa-arrow-right transform group-hover:translate-x-2 transition-transform"></i>
+                        </a>
+                    </div>
+
+                    <div class="flex gap-8 pt-8 opacity-0" id="heroStats">
+                        <div class="hover:scale-110 transition-transform cursor-pointer">
+                            <div class="font-display font-bold text-3xl text-brand-300 counter-value" data-target="98">0</div>
+                            <div class="text-sm text-gray-500 uppercase tracking-wider">Accuracy</div>
+                        </div>
+                        <div class="hover:scale-110 transition-transform cursor-pointer">
+                            <div class="font-display font-bold text-3xl text-brand-accent counter-value" data-target="100">0</div>
+                            <div class="text-sm text-gray-500 uppercase tracking-wider">Players</div>
+                        </div>
+                        <div class="hover:scale-110 transition-transform cursor-pointer">
+                            <div class="font-display font-bold text-3xl text-brand-glow">100%</div>
+                            <div class="text-sm text-gray-500 uppercase tracking-wider">Safe</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative hidden lg:block hero-image-float">
+                    <div class="absolute inset-0 bg-gradient-to-r from-brand-500/30 to-brand-accent/30 rounded-full blur-3xl"></div>
+                    <div class="relative glass rounded-3xl p-8 glow-purple">
+                        <div class="aspect-square rounded-2xl bg-gradient-to-br from-brand-700 to-brand-900 flex items-center justify-center relative overflow-hidden group">
+                            <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%239C92AC\' fill-opacity=\'0.1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20 animate-spin-slow"></div>
+                            <i class="fas fa-gamepad text-9xl text-brand-300/20 group-hover:scale-110 group-hover:text-brand-accent/30 transition-all duration-500 animate-pulse"></i>
+                            
+                            <div class="absolute top-4 right-4 w-16 h-16 rounded-full bg-brand-accent/20 flex items-center justify-center floating-icon">
+                                <i class="fas fa-bullseye text-brand-accent text-2xl animate-bounce"></i>
+                            </div>
+                            <div class="absolute bottom-4 left-4 w-16 h-16 rounded-full bg-brand-glow/20 flex items-center justify-center floating-icon">
+                                <i class="fas fa-bolt text-brand-glow text-2xl animate-pulse"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Grid -->
+    <section id="features" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal-on-scroll">
+                <h2 class="font-display font-bold text-4xl md:text-5xl text-white mb-4 shimmer-text">OPTIMIZATION</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto animate-pulse">Everything you need to Free Fire</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="feature-card glass rounded-2xl p-6 cursor-pointer reveal-on-scroll group">
+                    <div class="icon-box w-14 h-14 rounded-xl bg-brand-500/20 flex items-center justify-center mb-4">
+                        <i class="fas fa-crosshairs text-2xl text-brand-300 group-hover:text-brand-accent transition-colors"></i>
+                    </div>
+                    <h3 class="font-display font-bold text-xl text-white mb-2 group-hover:text-brand-300 transition-colors">Precision Aim</h3>
+                    <p class="text-gray-400 text-sm">Headshot-optimized sensitivity calibration</p>
+                </div>
+
+                <div class="feature-card glass rounded-2xl p-6 cursor-pointer reveal-on-scroll group">
+                    <div class="icon-box w-14 h-14 rounded-xl bg-brand-accent/20 flex items-center justify-center mb-4">
+                        <i class="fas fa-hand-pointer text-2xl text-brand-accent"></i>
+                    </div>
+                    <h3 class="font-display font-bold text-xl text-white mb-2 group-hover:text-brand-accent transition-colors">Smooth Control</h3>
+                    <p class="text-gray-400 text-sm">Zero lag, perfectly stable tracking</p>
+                </div>
+
+                <div class="feature-card glass rounded-2xl p-6 cursor-pointer reveal-on-scroll group">
+                    <div class="icon-box w-14 h-14 rounded-xl bg-brand-glow/20 flex items-center justify-center mb-4">
+                        <i class="fas fa-cog text-2xl text-brand-glow"></i>
+                    </div>
+                    <h3 class="font-display font-bold text-xl text-white mb-2 group-hover:text-brand-glow transition-colors">Custom Config</h3>
+                    <p class="text-gray-400 text-sm">Device-specific optimization</p>
+                </div>
+
+                <div class="feature-card glass rounded-2xl p-6 cursor-pointer reveal-on-scroll group">
+                    <div class="icon-box w-14 h-14 rounded-xl bg-green-500/20 flex items-center justify-center mb-4">
+                        <i class="fas fa-shield-check text-2xl text-green-400"></i>
+                    </div>
+                    <h3 class="font-display font-bold text-xl text-white mb-2 group-hover:text-green-400 transition-colors">100% Safe</h3>
+                    <p class="text-gray-400 text-sm">No hacks, no bans, legit only</p>
+                </div>
+
+                <div class="feature-card glass rounded-2xl p-6 cursor-pointer reveal-on-scroll group">
+                    <div class="icon-box w-14 h-14 rounded-xl bg-yellow-500/20 flex items-center justify-center mb-4">
+                        <i class="fas fa-bolt text-2xl text-yellow-400"></i>
+                    </div>
+                    <h3 class="font-display font-bold text-xl text-white mb-2 group-hover:text-yellow-400 transition-colors">FPS Boost</h3>
+                    <p class="text-gray-400 text-sm">Maximum frame rate optimization</p>
+                </div>
+
+                <div class="feature-card glass rounded-2xl p-6 cursor-pointer reveal-on-scroll group">
+                    <div class="icon-box w-14 h-14 rounded-xl bg-blue-500/20 flex items-center justify-center mb-4">
+                        <i class="fas fa-headset text-2xl text-blue-400"></i>
+                    </div>
+                    <h3 class="font-display font-bold text-xl text-white mb-2 group-hover:text-blue-400 transition-colors">24/7 Support</h3>
+                    <p class="text-gray-400 text-sm">Personal setup assistance</p>
+                </div>
+
+                <div class="feature-card glass rounded-2xl p-6 cursor-pointer reveal-on-scroll group">
+                    <div class="icon-box w-14 h-14 rounded-xl bg-red-500/20 flex items-center justify-center mb-4">
+                        <i class="fas fa-wifi text-2xl text-red-400"></i>
+                    </div>
+                    <h3 class="font-display font-bold text-xl text-white mb-2 group-hover:text-red-400 transition-colors">Low Ping</h3>
+                    <p class="text-gray-400 text-sm">Network latency reduction</p>
+                </div>
+
+                <div class="feature-card glass rounded-2xl p-6 cursor-pointer reveal-on-scroll group">
+                    <div class="icon-box w-14 h-14 rounded-xl bg-pink-500/20 flex items-center justify-center mb-4">
+                        <i class="fas fa-rocket text-2xl text-pink-400"></i>
+                    </div>
+                    <h3 class="font-display font-bold text-xl text-white mb-2 group-hover:text-pink-400 transition-colors">Fast Work</h3>
+                    <p class="text-gray-400 text-sm">Under 24h</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Platform Selection -->
+    <section class="py-24 bg-brand-800/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal-on-scroll">
+                <h2 class="font-display font-bold text-4xl text-white mb-4 shimmer-text">CHOOSE PLATFORM</h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <div class="platform-card glass rounded-3xl p-8 text-center cursor-pointer hover:border-brand-accent/50 transition-all group reveal-on-scroll" onclick="selectPlatform('mobile')">
+                    <div class="w-24 h-24 mx-auto mb-6 rounded-2xl bg-brand-500/20 flex items-center justify-center group-hover:bg-brand-accent/20 group-hover:scale-110 transition-all duration-300 animate-pulse">
+                        <i class="fas fa-mobile-alt text-5xl text-brand-300 group-hover:text-brand-accent transition-colors"></i>
+                    </div>
+                    <h3 class="font-display font-bold text-2xl text-white mb-2 group-hover:text-brand-accent transition-colors">Mobile</h3>
+                    <p class="text-gray-400">Android & iOS</p>
+                </div>
+
+                <div class="platform-card glass rounded-3xl p-8 text-center cursor-pointer hover:border-brand-accent/50 transition-all group reveal-on-scroll" onclick="selectPlatform('emulator')">
+                    <div class="w-24 h-24 mx-auto mb-6 rounded-2xl bg-brand-500/20 flex items-center justify-center group-hover:bg-brand-accent/20 group-hover:scale-110 transition-all duration-300 animate-pulse">
+                        <i class="fas fa-desktop text-5xl text-brand-300 group-hover:text-brand-accent transition-colors"></i>
+                    </div>
+                    <h3 class="font-display font-bold text-2xl text-white mb-2 group-hover:text-brand-accent transition-colors">Emulator</h3>
+                    <p class="text-gray-400">PC Players</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal-on-scroll">
+                <h2 class="font-display font-bold text-4xl md:text-5xl text-white mb-4 shimmer-text">PRICING PLANS</h2>
+                <p class="text-gray-400 animate-pulse">One-time payment, lifetime value</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto items-center">
+                <!-- Basic -->
+                <div class="pricing-card glass rounded-3xl p-8 reveal-on-scroll hover:transform hover:scale-105 transition-all duration-300 group">
+                    <div class="mb-8">
+                        <h3 class="font-display font-bold text-xl text-gray-400 mb-2 group-hover:text-white transition-colors">STARTER</h3>
+                        <div class="flex items-baseline gap-1">
+                            <span class="font-display font-bold text-5xl text-white price-tag">LKR 3,000</span>
+                        </div>
+                    </div>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center gap-3 text-gray-300 hover:translate-x-2 transition-transform">
+                            <i class="fas fa-check text-brand-300 check-icon"></i>
+                            <span>Basic Optimization</span>
+                        </li>
+                        <li class="flex items-center gap-3 text-gray-300 hover:translate-x-2 transition-transform">
+                            <i class="fas fa-check text-brand-300 check-icon"></i>
+                            <span>Standard FPS boost</span>
+                        </li>
+                        <li class="flex items-center gap-3 text-gray-300 hover:translate-x-2 transition-transform">
+                            <i class="fas fa-check text-brand-300 check-icon"></i>
+                            <span>Without Sensi [only Optimize]</span>
+                        </li>
+                    </ul>
+                    <button onclick="selectPlan('starter')" class="w-full py-4 rounded-full border border-brand-400 text-brand-300 font-bold hover:bg-brand-400 hover:text-white transition-all duration-300 hover:scale-105">
+                        Get Started
+                    </button>
+                </div>
+
+                <!-- Pro -->
+                <div class="pricing-card glass rounded-3xl p-8 border-2 border-brand-accent relative z-10 reveal-on-scroll group glow-purple">
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 popular-badge">
+                        <span class="bg-brand-accent text-white text-xs font-bold px-4 py-1 rounded-full">POPULAR</span>
+                    </div>
+                    <div class="mb-8">
+                        <h3 class="font-display font-bold text-xl text-brand-accent mb-2">PRO</h3>
+                        <div class="flex items-baseline gap-1">
+                            <span class="font-display font-bold text-5xl text-white price-tag">LKR 6,000</span>
+                        </div>
+                    </div>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center gap-3 text-white hover:translate-x-2 transition-transform">
+                            <i class="fas fa-check text-brand-accent check-icon"></i>
+                            <span>Advanced Optimization</span>
+                        </li>
+                        <li class="flex items-center gap-3 text-white hover:translate-x-2 transition-transform">
+                            <i class="fas fa-check text-brand-accent check-icon"></i>
+                            <span>Premium FPS Boost</span>
+                        </li>
+                        <li class="flex items-center gap-3 text-white hover:translate-x-2 transition-transform">
+                            <i class="fas fa-check text-brand-accent check-icon"></i>
+                            <span>99% AimBot Sensi</span>
+                        </li>
+                        <li class="flex items-center gap-3 text-white hover:translate-x-2 transition-transform">
+                            <i class="fas fa-check text-brand-accent check-icon"></i>
+                            <span>24/7 Support</span>
+                        </li>
+                    </ul>
+                    <button onclick="selectPlan('pro')" class="btn-primary w-full py-4 rounded-full text-white font-bold hover:scale-105 transition-transform animate-pulse">
+                        Get Pro
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section with Pinterest Image -->
+    <section id="about" class="py-24 bg-brand-800/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="reveal-on-scroll">
+                    <div class="glass rounded-3xl p-2 inline-block mb-6 profile-image">
+                        <div class="w-64 h-64 rounded-2xl overflow-hidden relative">
+                            <img src="hansana.jpg" alt="Hansana Bandara" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-brand-900/80 via-transparent to-transparent"></div>
+                            <div class="absolute bottom-4 left-4 right-4">
+                                <p class="text-white font-display font-bold text-lg">Hansana Bandara</p>
+                                <p class="text-brand-300 text-sm">Optimizer</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal-on-scroll">
+                    <h2 class="font-display font-bold text-4xl md:text-5xl text-white mb-6">
+                        MEET <span class="text-brand-accent shimmer-text">HANSANA BANDARA</span>
+                    </h2>
+                    <p class="text-lg text-gray-400 mb-8 leading-relaxed">
+                        Graphic Designer & Computer Expert specializing in Pc optimization. 
+                        Helping players achieve pro-level accuracy with 0% lag.
+                    </p>
+
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4 p-4 rounded-xl bg-brand-700/30 border-l-4 border-brand-300 hover:bg-brand-700/50 hover:translate-x-2 transition-all cursor-pointer group">
+                            <i class="fas fa-sliders-h text-brand-300 text-xl group-hover:rotate-180 transition-transform duration-500"></i>
+                            <div>
+                                <h4 class="font-bold text-white group-hover:text-brand-300 transition-colors">Custom Tuning</h4>
+                                <p class="text-sm text-gray-400">Device-specific optimization</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 p-4 rounded-xl bg-brand-700/30 border-l-4 border-brand-accent hover:bg-brand-700/50 hover:translate-x-2 transition-all cursor-pointer group">
+                            <i class="fas fa-bullseye text-brand-accent text-xl group-hover:animate-spin"></i>
+                            <div>
+                                <h4 class="font-bold text-white group-hover:text-brand-accent transition-colors">Pro Accuracy</h4>
+                                <p class="text-sm text-gray-400">99% headshot rate achieved</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 p-4 rounded-xl bg-brand-700/30 border-l-4 border-brand-glow hover:bg-brand-700/50 hover:translate-x-2 transition-all cursor-pointer group">
+                            <i class="fas fa-shield-alt text-brand-glow text-xl group-hover:animate-pulse"></i>
+                            <div>
+                                <h4 class="font-bold text-white group-hover:text-brand-glow transition-colors">1000% Safe</h4>
+                                <p class="text-sm text-gray-400">No hacks, completely legit</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="glass rounded-3xl p-8 md:p-12 border border-brand-400/20 reveal-on-scroll glow-purple">
+                <div class="text-center mb-12">
+                    <h2 class="font-display font-bold text-4xl text-white mb-4 shimmer-text">Follow Us</h2>
+                    <p class="text-gray-400 animate-pulse">Ready to upgrade your gameplay?</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6 mb-8">
+                    <a href="https://wa.me/94782826710" target="_blank" 
+                       class="group flex items-center gap-4 p-6 rounded-2xl bg-green-500/10 border border-green-500/30 hover:bg-green-500/20 transition-all duration-300 hover:scale-105">
+                        <div class="w-14 h-14 rounded-full bg-green-500/20 flex items-center justify-center group-hover:scale-110 group-hover:rotate-12 transition-all duration-300 animate-pulse">
+                            <i class="fab fa-whatsapp text-2xl text-green-400"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white text-lg group-hover:text-green-400 transition-colors">WhatsApp</h4>
+                            <p class="text-gray-400 text-sm">+94 78 282 6710</p>
+                        </div>
+                    </a>
+
+                    <a href="https://discord.gg/rUvwfTHsP2" target="_blank"
+                       class="group flex items-center gap-4 p-6 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 hover:bg-indigo-500/20 transition-all duration-300 hover:scale-105">
+                        <div class="w-14 h-14 rounded-full bg-indigo-500/20 flex items-center justify-center group-hover:scale-110 group-hover:-rotate-12 transition-all duration-300 animate-pulse">
+                            <i class="fab fa-discord text-2xl text-indigo-400"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white text-lg group-hover:text-indigo-400 transition-colors">Discord</h4>
+                            <p class="text-gray-400 text-sm">Join Server</p>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="text-center p-6 rounded-xl bg-brand-700/30 hover:bg-brand-700/50 transition-colors cursor-pointer group">
+                    <p class="text-brand-300 font-display font-bold text-2xl mb-2 group-hover:scale-110 transition-transform">@mine_optimize</p>
+                    <p class="text-gray-400 text-sm group-hover:text-white transition-colors">Follow on TikTok</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-brand-700/50 py-12 bg-brand-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-3 group cursor-pointer">
+                <div class="w-8 h-8 rounded-lg bg-brand-500 flex items-center justify-center group-hover:rotate-12 transition-transform animate-pulse">
+                    <i class="fas fa-crosshairs text-white text-sm"></i>
+                </div>
+                <span class="font-display font-bold text-xl text-white shimmer-text">MINE OPTIMIZE</span>
+            </div>
+            
+            <div class="flex gap-6">
+                <a href="https://www.tiktok.com/@mine_optimize" target="_blank" class="social-icon w-10 h-10 rounded-full bg-brand-700/50 flex items-center justify-center text-gray-400 hover:bg-brand-accent hover:text-white transition-all duration-300">
+                    <i class="fab fa-tiktok"></i>
+                </a>
+                <a href="https://www.youtube.com/@mine_optimize" target="_blank" class="social-icon w-10 h-10 rounded-full bg-brand-700/50 flex items-center justify-center text-gray-400 hover:bg-brand-accent hover:text-white transition-all duration-300">
+                    <i class="fab fa-youtube"></i>
+                </a>
+                <a href="https://discord.gg/rUvwfTHsP2" target="_blank" class="social-icon w-10 h-10 rounded-full bg-brand-700/50 flex items-center justify-center text-gray-400 hover:bg-brand-accent hover:text-white transition-all duration-300">
+                    <i class="fab fa-discord"></i>
+                </a>
+            </div>
+            
+            <p class="text-gray-500 text-sm hover:text-white transition-colors">© 2026 Hansana Bandara</p>
+        </div>
+    </footer>
+
+    <!-- Toast -->
+    <div id="toast" class="fixed bottom-8 right-8 bg-brand-800 border border-brand-accent text-white px-6 py-4 rounded-xl shadow-2xl transform translate-y-24 opacity-0 transition-all duration-300 z-50 flex items-center gap-3">
+        <i class="fas fa-check-circle text-brand-accent text-xl animate-bounce"></i>
+        <span id="toastMessage">Action completed!</span>
+    </div>
+
+    <script>
+        // Register GSAP
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Mobile Menu
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('active');
+        }
+
+        // Hero Animations
+        window.addEventListener('load', () => {
+            const tl = gsap.timeline();
+            
+            tl.to('#heroBadge', { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' })
+              .to('#heroTitle', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.3')
+              .to('#heroText', { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '-=0.4')
+              .to('#heroButtons', { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '-=0.3')
+              .to('#heroStats', { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '-=0.3');
+
+            // Counter Animation
+            const counters = document.querySelectorAll('.counter-value');
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                gsap.to(counter, {
+                    innerHTML: target,
+                    duration: 2,
+                    snap: { innerHTML: 1 },
+                    ease: 'power2.out',
+                    onUpdate: function() {
+                        if (target > 1000) {
+                            counter.innerHTML = Math.ceil(this.targets()[0].innerHTML).toLocaleString() + '+';
+                        } else {
+                            counter.innerHTML = Math.ceil(this.targets()[0].innerHTML) + '%';
+                        }
+                    }
+                });
+            });
+        });
+
+        // Scroll Reveals
+        gsap.utils.toArray('.reveal-on-scroll').forEach((element) => {
+            gsap.fromTo(element, 
+                { opacity: 0, y: 30 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.6,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: element,
+                        start: 'top 85%',
+                        toggleActions: 'play none none reverse'
+                    }
+                }
+            );
+        });
+
+        // Navbar Scroll
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 50) {
+                navbar.classList.add('bg-brand-900/95', 'backdrop-blur-md', 'shadow-lg');
+            } else {
+                navbar.classList.remove('bg-brand-900/95', 'backdrop-blur-md', 'shadow-lg');
+            }
+            lastScroll = currentScroll;
+        });
+
+        // Platform Selection
+        function selectPlatform(platform) {
+            const names = { mobile: 'Mobile', emulator: 'Emulator' };
+            showToast(`${names[platform]} selected!`);
+            document.getElementById('pricing').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Plan Selection
+        function selectPlan(plan) {
+            const plans = { starter: 'Starter', pro: 'Pro' };
+            const prices = { starter: 'LKR 1,500', pro: 'LKR 4,500' };
+            showToast(`${plans[plan]} plan (${prices[plan]}) selected!`);
+            setTimeout(() => {
+                document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+            }, 800);
+        }
+
+        // Toast
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMessage').textContent = message;
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            toast.classList.add('toast-animate');
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+                toast.classList.remove('toast-animate');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
